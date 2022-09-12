@@ -12,6 +12,12 @@ namespace MoneyMgmt.Web.Middlewares
 {
     public static class AuthenticationMiddleware
     {
+        /// <summary>
+        /// Service to use JWT token for validate user
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
         public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, IConfiguration config)
         {
             var secret = config.GetSection("JwtConfig").GetSection("secret").Value;

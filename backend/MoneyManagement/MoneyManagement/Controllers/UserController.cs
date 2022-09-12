@@ -31,9 +31,16 @@ namespace MoneyMgmt.Web.Controllers
             _config = config;
         }
 
+        #region -- READ --
+
+        /// <summary>
+        /// Get user by id on path param
+        /// </summary>
+        /// <param name="id">Id of user</param>
+        /// <returns>User instance information</returns>
         [HttpGet("{id}")]
         [Authorize]
-        public IActionResult GetAll(int id)
+        public IActionResult GetUserById(int id)
         {
             var res = new SingleResponse
             {
@@ -43,9 +50,28 @@ namespace MoneyMgmt.Web.Controllers
             return Ok(res);
         }
 
+        #endregion
+
+        #region -- CREATE --
+
+        #endregion
+
+        #region -- UPDATE --
+
+        #endregion
+
+        #region -- DELETE --
+
+        #endregion
+
+        /// <summary>
+        /// Login authenticated user with JWT token - use response token to get access authorize API
+        /// </summary>
+        /// <param name="login">Username and Password on JSON format</param>
+        /// <returns>JWT token on response</returns>
         [AllowAnonymous]
-        [HttpPost]
-        public IActionResult Login([FromBody]LoginInfoModel login)
+        [HttpPost("login")]
+        public IActionResult Login([FromBody]LoginInfo login)
         {
             IActionResult res = Unauthorized();
 
@@ -66,34 +92,6 @@ namespace MoneyMgmt.Web.Controllers
             }
 
             return res;
-        }
-
-        /// <summary>
-        /// Generate JWT token that help authorize user
-        /// </summary>
-        /// <param name="loginInfoModel">Login information</param>
-        /// <returns>JWT Token that use for authorize</returns>
-        private string GenerateJWT(LoginInfoModel user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
-                null,
-                //expires: DateTime.Now.AddMinutes(120),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token); ;
-        }
-
-        [HttpGet("randomly")]
-        public string GetRandomToken()
-        {
-            var jwt = new JwtServices(_config);
-            var token = jwt.GenerateSecurityToken("sample@mail.com"); ;
-            return token;
         }
     }
 }

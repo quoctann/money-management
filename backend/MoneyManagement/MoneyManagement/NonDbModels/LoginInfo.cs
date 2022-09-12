@@ -2,7 +2,7 @@
 
 namespace MoneyMgmt.Web.NonDbModels
 {
-    public class LoginInfoModel
+    public class LoginInfo
     {
         [Required]
         public string Username { get; set; }

@@ -13,6 +13,7 @@ namespace MoneyMgmt.BLL
     public class JwtServices
     {
         private readonly string _secret;
+
         private readonly string _expDate;
 
         public JwtServices(IConfiguration config)
@@ -22,6 +23,11 @@ namespace MoneyMgmt.BLL
             _expDate = config.GetSection("JwtConfig").GetSection("expirationInMinutes").Value;
         }
 
+        /// <summary>
+        /// Generate JWT token for signed in user
+        /// </summary>
+        /// <param name="email">User email to create claim</param>
+        /// <returns>JWT token using for validate</returns>
         public string GenerateSecurityToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
