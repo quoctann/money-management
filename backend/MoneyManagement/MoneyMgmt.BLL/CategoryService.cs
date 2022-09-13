@@ -22,5 +22,49 @@ namespace MoneyMgmt.BLL
             res.Data = m;
             return res;
         }
+
+        public SingleResponse GetCategoriesByUserId(int userId)
+        {
+            var res = new SingleResponse();
+            var m = _rep.GetCategoriesByUserId(userId);
+            res.Data = m;
+            return res;
+        }
+
+        public SingleResponse CreateCategoryByUser(Category category, int userId)
+        {
+            var res = new SingleResponse();
+            bool result = _rep.CreateCategoryByUser(category, userId);
+
+            if (result)
+            {
+                res.Code = "201";
+                res.SetMessage("Create successfully");
+            }
+            else
+            {
+                res.SetError(code: "400", message: "Create failed");
+            }
+
+            return res;
+        }
+
+        public SingleResponse UpdateCategoryByUser(Category category, int userId)
+        {
+            var res = new SingleResponse();
+            bool result = _rep.UpdateCategoryByUser(category, userId);
+
+            if (result)
+            {
+                res.Code = "200";
+                res.SetMessage("Update successfully");
+            }
+            else
+            {
+                res.SetError(code: "400", message: "Update failed");
+            }
+
+            return res;
+        }
     }
 }

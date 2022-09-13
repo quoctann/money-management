@@ -38,12 +38,7 @@ namespace MoneyMgmt.Web.Controllers
         //[Authorize]
         public IActionResult GetCategoryById(int id)
         {
-            var res = new SingleResponse
-            {
-                Data = categoryService.Read(id)
-            };
-
-            return Ok(res);
+            return Ok(categoryService.Read(id));
         }
 
         /// <summary>
@@ -54,8 +49,8 @@ namespace MoneyMgmt.Web.Controllers
         [HttpGet("by-user/{userId}")]
         //[Authorize]
         public IActionResult GetCategoriesByUserId(int userId)
-        {
-            return Ok(new SingleResponse(userId.ToString()));
+        {            
+            return Ok(categoryService.GetCategoriesByUserId(userId));
         }
 
         #endregion
@@ -67,12 +62,18 @@ namespace MoneyMgmt.Web.Controllers
         /// </summary>
         /// <param name="userCategoryInfo">Data to create category</param>
         /// <returns>Status code</returns>
-        [HttpPost("create/{userId}")]
+        [HttpPost("create")]
         //[Authorize]
-        public IActionResult CreateCategoryByUser(int userId, [FromBody]Category data)
+        public IActionResult CreateCategoryByUser([FromBody]UserCategoryInfo data)
         {
-            string test = userId.ToString() + "\n" + data.Label;
-            return Ok(new SingleResponse(test));
+            Category category = new Category
+            {
+                Id = data.Id,
+                Label = data.Label,
+                Icon = data.Icon,
+            };
+
+            return Ok(categoryService.CreateCategoryByUser(category, data.UserId));
         }
 
         #endregion
@@ -84,12 +85,18 @@ namespace MoneyMgmt.Web.Controllers
         /// </summary>
         /// <param name="userCategoryInfo">Data to create category</param>
         /// <returns>Status code</returns>
-        [HttpPost("update/{userId}")]
+        [HttpPost("update")]
         //[Authorize]
-        public IActionResult UpdateCategoryByUser(int userId, [FromBody]Category data)
+        public IActionResult UpdateCategoryByUser([FromBody] UserCategoryInfo data)
         {
-            string test = userId.ToString() + "\n" + data.Label;
-            return Ok(new SingleResponse(test));
+            Category category = new Category
+            {
+                Id = data.Id,
+                Label = data.Label,
+                Icon = data.Icon,
+            };
+
+            return Ok(categoryService.UpdateCategoryByUser(category, data.UserId));
         }
 
         #endregion
@@ -105,8 +112,7 @@ namespace MoneyMgmt.Web.Controllers
         //[Authorize]
         public IActionResult DeleteCategoryByUser(int userId, int categoryId)
         {
-            string test = userId.ToString() + "\n" +categoryId.ToString();
-            return Ok(new SingleResponse(test));
+            return NotFound();
         }
 
         #endregion
