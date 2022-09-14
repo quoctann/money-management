@@ -25,22 +25,78 @@ namespace MoneyMgmt.Web.Controllers
         {
             _config = config;
             recordService = new RecordService();
-
         }
 
+
         #region -- READ --
+
+        [HttpGet("{id}")]
+        //[Authorize]
+        public IActionResult GetRecordById(int id)
+        {
+            return Ok(recordService.Read(id));
+        }
+
+        [HttpGet("by-user/{userId}")]
+        //[Authorize]
+        public IActionResult GetRecordsByUserId(int userId)
+        {
+            return Ok(recordService.GetRecordsByUserId(userId));
+        }
 
         #endregion
 
         #region -- CREATE --
 
+        [HttpPost("create")]
+        //[Authorize]
+        public IActionResult CreateRecordByUser([FromBody] UserRecordInfo data)
+        {
+            Record record = new Record
+            {
+                Type = data.Type,
+                CategoryId = data.CategoryId,
+                AccountId = data.AccountId,
+                Description = data.Description,
+                Value = data.Value,
+                DateOfIssue = data.DateOfIssue
+            };
+
+            return Ok(recordService.CreateRecordByUser(record, data.UserId, data.CategoryId, data.AccountId));
+        }
+
         #endregion
 
         #region -- UPDATE --
 
+        [HttpPost("update")]
+        //[Authorize]
+        public IActionResult UpdateRecordByUser([FromBody] UserRecordInfo data)
+        {
+            Record record = new Record
+            {
+                Id = data.Id,
+                Type = data.Type,
+                CategoryId = data.CategoryId,
+                AccountId = data.AccountId,
+                Description = data.Description,
+                Value = data.Value,
+                DateOfIssue = data.DateOfIssue
+            };
+
+            return Ok(recordService.UpdateRecordByUser(record, data.UserId, data.CategoryId, data.AccountId));
+        }
+
         #endregion
 
         #region -- DELETE --
+
+        [HttpDelete("delete/{userId}/{recordId}")]
+        //[Authorize]
+        public IActionResult HardDeleteRecordByUser(int userId, int recordId)
+        {
+            return Ok(recordService.HardDeleteRecordByUser(recordId, userId));
+        }
 
         #endregion
     }

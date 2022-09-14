@@ -42,12 +42,7 @@ namespace MoneyMgmt.Web.Controllers
         [Authorize]
         public IActionResult GetUserById(int id)
         {
-            var res = new SingleResponse
-            {
-                Data = userService.Read(id)
-            };
-
-            return Ok(res);
+            return Ok(userService.Read(id));
         }
 
         #endregion
