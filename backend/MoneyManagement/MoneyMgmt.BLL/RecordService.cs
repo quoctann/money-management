@@ -86,5 +86,54 @@ namespace MoneyMgmt.BLL
 
             return res;
         }
+
+        #region -- Report API --
+
+        public SingleResponse SumRecordsByDateRange(int userId, DateTime startDate, DateTime endDate)
+        {
+            var res = new SingleResponse();
+            var result = _rep.SumRecordsByDateRange(userId, startDate, endDate);
+            res.SetData("200", result);
+            
+            return res;
+        }
+
+        public SingleResponse SumRecordsByCategory(int userId, int categoryId)
+        {
+            var res = new SingleResponse();
+            var result = _rep.SumRecordsByCategory(userId, categoryId);
+            res.SetData("200", result);
+
+            return res;
+        }
+
+        public SingleResponse SumRecordsByAccount(int userId, int accountId)
+        {
+            var res = new SingleResponse();
+            var result = _rep.SumRecordsByAccount(userId, accountId);
+            res.SetData("200", result);
+
+            return res;
+        }
+
+        public SingleResponse SumByAccountId(int userId, int accountId)
+        {
+            var res = new SingleResponse();
+            var result = _rep.SumByAccountId(userId, accountId);
+            res.SetData("200", result);
+            
+            return res;
+        }
+
+        public SingleResponse SumByCategory(int userId, int categoryId)
+        {
+            var res = new SingleResponse();
+            var result = _rep.SumByCategory(userId, categoryId);
+            res.SetData("200", result);
+
+            return res;
+        }
+
+        #endregion
     }
 }

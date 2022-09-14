@@ -29,6 +29,17 @@ namespace MoneyMgmt.BLL
             return data;
         }
 
+        public bool RegisterUser(User user)
+        {
+            bool isSuccess = _rep.RegisterUser(user);
+            return isSuccess;
+        }
+
+        public bool DeactiveUser(int userId)
+        {
+            return _rep.DeactiveUser(userId);
+        }
+
         public UserService()
         {
 

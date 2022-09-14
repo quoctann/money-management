@@ -31,8 +31,6 @@ namespace MoneyMgmt.Web.Controllers
             _config = config;
         }
 
-        #region -- READ --
-
         /// <summary>
         /// Get user by id on path param
         /// </summary>
@@ -44,20 +42,6 @@ namespace MoneyMgmt.Web.Controllers
         {
             return Ok(userService.Read(id));
         }
-
-        #endregion
-
-        #region -- CREATE --
-
-        #endregion
-
-        #region -- UPDATE --
-
-        #endregion
-
-        #region -- DELETE --
-
-        #endregion
 
         /// <summary>
         /// Login authenticated user with JWT token - use response token to get access authorize API
@@ -84,6 +68,46 @@ namespace MoneyMgmt.Web.Controllers
                         res = Ok(new { token = tokenStr });
                     }
                 }
+            }
+
+            return res;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult CreateUser([FromBody] UserInfo info)
+        {
+            IActionResult res = new StatusCodeResult(500);
+
+            if (!string.IsNullOrEmpty(info.Username) && !string.IsNullOrEmpty(info.Password))
+            {
+                User user = new User
+                {
+                    Username = info.Username,
+                    Password = info.Password,
+                    Fullname = info.Fullname,
+                    Email = info.Email,
+                    IsAdmin = false,
+                    IsActive = true,
+                    CurrencyUnit = info.CurrencyUnit,
+                };
+                if (userService.RegisterUser(user))
+                {
+                    res = Ok();
+                }
+            }
+
+            return res;
+        }
+
+        [HttpGet("deactive/{userId}")]
+        public IActionResult DeactiveUser(int userId)
+        {
+            IActionResult res = new StatusCodeResult(500);
+
+            if (userService.DeactiveUser(userId))
+            {
+                res = Ok();
             }
 
             return res;

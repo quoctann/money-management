@@ -1,4 +1,5 @@
 ﻿using MoneyMgmt.Common.DAL;
+using MoneyMgmt.Common.Utils;
 using MoneyMgmt.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,43 @@ namespace MoneyMgmt.DAL
             var res = All.FirstOrDefault(u => u.Username.Equals(username));
 
             return res;
+        }
+
+        public bool RegisterUser(User user)
+        {
+            User dbUser = All.FirstOrDefault(u => u.Username.Equals(user.Username) || u.Email.Equals(user.Email));
+            if (null == dbUser)
+            {
+                dbUser.Password = Utils.GetMD5HashOfString(dbUser.Password);
+                Create(user);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool DeactiveUser(int userId)
+        {
+            using (Context)
+            using (var dbContextTransaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    User user = Read(userId);
+                    user.IsActive = false;
+                    Context.Users.Update(user);
+                    Context.SaveChanges();
+                    dbContextTransaction.Commit();
+
+                    return true;
+                }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
+                }
+            }
+
+            return false;               
         }
     }
 }

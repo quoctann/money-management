@@ -44,6 +44,32 @@ namespace MoneyMgmt.Web.Controllers
             return Ok(recordService.GetRecordsByUserId(userId));
         }
 
+        [HttpGet("sum-by-date")]
+        //[Authorize]
+        public IActionResult SumRecordsByDateRange(
+            [FromQuery(Name = "user-id")] int userId,
+            [FromQuery(Name = "start-date")] DateTime startDate,
+            [FromQuery(Name = "end-date")] DateTime endDate)
+        {
+            return Ok(recordService.SumRecordsByDateRange(userId, startDate, endDate));
+        }
+
+        [HttpGet("sum-by-category")]
+        //[Authorize]
+        public IActionResult SumRecordsByCategory([FromQuery(Name = "user-id")] int userId,
+            [FromQuery(Name = "category-id")] int categoryId)
+        {
+            return Ok(recordService.SumRecordsByCategory(userId, categoryId));
+        }
+
+        [HttpGet("sum-by-account")]
+        //[Authorize]
+        public IActionResult SumRecordsByAccount([FromQuery(Name = "user-id")] int userId,
+            [FromQuery(Name = "account-id")] int accountId)
+        {
+            return Ok(recordService.SumRecordsByAccount(userId, accountId));
+        }
+
         #endregion
 
         #region -- CREATE --

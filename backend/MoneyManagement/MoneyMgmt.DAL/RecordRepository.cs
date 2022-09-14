@@ -133,5 +133,73 @@ namespace MoneyMgmt.DAL
 
             return false;
         }
+
+        #region -- For Report API --
+
+        public IQueryable<Record> FilterRecordsByDateRange(int userId, DateTime startDate, DateTime endDate)
+        {
+            var records = GetRecordsByUserId(userId);
+
+            var result = records.Where(r => r.DateOfIssue < endDate && r.DateOfIssue > startDate);
+
+            return result;
+        }
+
+        public IQueryable<Record> FilterRecordsByCategory(int userId, int categoryId)
+        {
+            var records = GetRecordsByUserId(userId);
+
+            var result = records.Where(r => r.CategoryId == categoryId);
+
+            return result;
+        }
+
+        public int SumRecordsByDateRange(int userId, DateTime startDate, DateTime endDate)
+        {
+            var records = GetRecordsByUserId(userId);
+
+            int result = records.Where(r => r.DateOfIssue < endDate && r.DateOfIssue > startDate).Sum(rc => rc.Value);
+
+            return result;
+        }
+
+        public int SumRecordsByCategory(int userId, int categoryId)
+        {
+            var records = GetRecordsByUserId(userId);
+
+            int result = records.Where(r => r.CategoryId == categoryId).Sum(rc => rc.Value);
+
+            return result;
+        }
+        
+        public int SumRecordsByAccount(int userId, int accountId)
+        {
+            var records = GetRecordsByUserId(userId);
+
+            int result = records.Where(r => r.AccountId == accountId).Sum(rc => rc.Value);
+
+            return result;
+        }
+
+
+        public int SumByAccountId(int userId, int accountId)
+        {            
+            var records = GetRecordsByUserId(userId);
+
+            int result = records.Where(rc => rc.AccountId == accountId).Sum(r => r.Value);
+
+            return result;
+        }
+
+        public int SumByCategory(int userId, int categoryId)
+        {
+            var records = GetRecordsByUserId(userId);
+
+            int result = records.Where(rc => rc.CategoryId == categoryId).Sum(r => r.Value);
+
+            return result;
+        }
+
+        #endregion
     }
 }
