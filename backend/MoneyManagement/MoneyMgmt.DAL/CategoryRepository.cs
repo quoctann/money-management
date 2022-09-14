@@ -97,6 +97,32 @@ namespace MoneyMgmt.DAL
         public bool HardDeleteCategoryByUser(int categoryId, int userId)
         {
             // Table impacted: Records junction, User junction
+            using (Context)
+            using (var dbContextTransaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    Category category = Read(categoryId);
+                    IQueryable<UserCategory> uc = Context.UserCategories.Where(x =>
+                        x.CategoryId == category.Id && x.UserId == userId);
+                    IQueryable<Record> records = Context.Records.Where(rc =>
+                        rc.CategoryId == categoryId);
+
+                    Context.Categories.Remove(category);
+                    Context.UserCategories.RemoveRange(uc);
+                    Context.Records.RemoveRange(records);
+
+                    Context.SaveChanges();
+                    dbContextTransaction.Commit();
+
+                    return true;
+                }
+                catch (Exception)
+                {
+                    dbContextTransaction.Rollback();
+                }
+            }
+
             return false;
         }
     }

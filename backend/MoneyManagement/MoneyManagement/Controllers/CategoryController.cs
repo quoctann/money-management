@@ -110,9 +110,9 @@ namespace MoneyMgmt.Web.Controllers
         /// <returns></returns>
         [HttpDelete("delete/{userId}/{categoryId}")]
         //[Authorize]
-        public IActionResult DeleteCategoryByUser(int userId, int categoryId)
+        public IActionResult HardDeleteCategoryByUser(int userId, int categoryId)
         {
-            return NotFound();
+            return Ok(categoryService.HardDeleteCategoryByUser(categoryId, userId));
         }
 
         #endregion

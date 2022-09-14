@@ -66,5 +66,23 @@ namespace MoneyMgmt.BLL
 
             return res;
         }
+
+        public SingleResponse HardDeleteCategoryByUser(int categoryId, int userId)
+        {
+            var res = new SingleResponse();
+            bool result = _rep.HardDeleteCategoryByUser(categoryId: categoryId, userId: userId);
+
+            if (result)
+            {
+                res.Code = "200";
+                res.SetMessage("Delete successfully");
+            }
+            else
+            {
+                res.SetError(code: "400", message: "Delete failed");
+            }
+
+            return res;
+        }
     }
 }
