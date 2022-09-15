@@ -107,6 +107,40 @@ namespace MoneyMgmt.BLL
             return res;
         }
 
+        public SingleResponse FilterRecordsByDateRange(int userId, DateTime startDate, DateTime endDate)
+        {
+            var res = new SingleResponse();
+            var result = _rep.FilterRecordsByDateRange(userId, startDate, endDate);
+
+            if (null != result)
+            {
+                res.SetData("200", result);
+            }
+            else
+            {
+                res.SetError(code: "500", message: "Get filtered data failed");
+            }
+
+            return res;
+        }
+
+        public SingleResponse FilterRecordsByCategory(int userId, int categoryId)
+        {
+            var res = new SingleResponse();
+            var result = _rep.FilterRecordsByCategory(userId, categoryId);
+
+            if (null != result)
+            {
+                res.SetData("200", result);
+            }
+            else
+            {
+                res.SetError(code: "500", message: "Get filtered data failed");
+            }
+
+            return res;
+        }
+
         public SingleResponse SumRecordsByAccount(int userId, int accountId)
         {
             var res = new SingleResponse();

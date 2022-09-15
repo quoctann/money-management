@@ -44,6 +44,25 @@ namespace MoneyMgmt.Web.Controllers
             return Ok(recordService.GetRecordsByUserId(userId));
         }
 
+        [HttpGet("filter-by-date")]
+        //[Authorize]
+        public IActionResult FilterRecordsByDateRange(
+            [FromQuery(Name = "user-id")] int userId,
+            [FromQuery(Name = "start-date")] DateTime startDate,
+            [FromQuery(Name = "end-date")] DateTime endDate)
+        {
+            return Ok(recordService.FilterRecordsByDateRange(userId, startDate, endDate));
+        }
+
+        [HttpGet("filter-by-category")]
+        //[Authorize]
+        public IActionResult FilterRecordsByCategory(
+            [FromQuery(Name = "user-id")] int userId,
+            [FromQuery(Name = "category-id")] int categoryId)
+        {
+            return Ok(recordService.FilterRecordsByCategory(userId, categoryId));
+        }
+
         [HttpGet("sum-by-date")]
         //[Authorize]
         public IActionResult SumRecordsByDateRange(

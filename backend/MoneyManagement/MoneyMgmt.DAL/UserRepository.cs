@@ -37,9 +37,9 @@ namespace MoneyMgmt.DAL
         public bool RegisterUser(User user)
         {
             User dbUser = All.FirstOrDefault(u => u.Username.Equals(user.Username) || u.Email.Equals(user.Email));
-            if (null == dbUser)
+            if (null == dbUser) // New user must not already exist on db
             {
-                dbUser.Password = Utils.GetMD5HashOfString(dbUser.Password);
+                user.Password = Utils.GetMD5HashOfString(user.Password);
                 Create(user);
                 return true;
             }
